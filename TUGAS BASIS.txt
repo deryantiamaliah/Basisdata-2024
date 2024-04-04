@@ -1,0 +1,674 @@
+jawaban tugas basis data =
+
+Jawaban no. 1 membuat database baru dengan nama: dbpegawai 
+= CREATE DATABASE dbpegawai;
+Query OK, 1 row affected (0.12 sec)
+
+
+Jawaban no. 2 Masuk ke dbpegawai dengan perintah USE
+= cd \
+
+C:\>cd xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 38
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| dbpegawai          |
+| dbpos              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+7 rows in set (0.001 sec)
+
+MariaDB [(none)]> USE dbpegawai;
+Database changed
+MariaDB [dbpegawai]>
+
+
+Jawaban no. 3 membuattabel baru dengan nama: divisi, dengan kolom-kolom sbb:
+id int primary key auto_increment
+nama varchar(30) dengan contraint: wajib diisi dan tidak boleh sama
+= MariaDB [dbpegawai]> CREATE TABLE divisi (
+    -> id INT PRIMARY KEY AUTO_INCREMENT,
+    -> nama VARCHAR(30) NOT NULL UNIQUE);
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [dbpegawai]> DESCRIBE divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.004 sec)
+
+
+
+Jawaban no. 4 menampilkan deskripsi tabel divisi 
+Buatlah tabel baru dengan nama: jabatan, dengan kolom-kolom sbb:
+id int primary key auto_increment
+nama varchar(30) dengan contraint: wajib diisi dan tidak boleh sama
+= MariaDB [dbpegawai]> DESCRIBE divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.004 sec)
+
+
+Jawaban no. 5 membuat  tabel baru dengan nama: jabatan, dengan kolom-kolom sbb:
+id int primary key auto_increment
+nama varchar(30) dengan contraint: wajib diisi dan tidak boleh sama
+= MariaDB [dbpegawai]> CREATE TABLE jabatan (
+    -> id INT PRIMARY KEY AUTO_INCREMENT,
+    -> nama VARCHAR(30) NOT NULL UNIQUE);
+Query OK, 0 rows affected (0.009 sec)
+
+
+Jawaban no. 6 menampilkan deskripsi tabel jabatan 
+= MariaDB [dbpegawai]> DESCRIBE jabatan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.005 sec)
+
+
+Jawaban no. 7 membuat tabel baru dengan nama: pegawai, dengan kolom-kolom sbb:
+id int primary key auto_increment
+nip char dengan constraint: wajib diisi, tidak boleh sama & 5 karakter
+nama varchar dengan constraint: wajib diisi dan maksimal 30 karakter
+gender enum('Laki-Laki','Perempuan') dengan constraint: wajib diisi
+tmp_lahir varchar dengan constraint: wajib diisi dan maksimal 30 karakter
+tgl_lahir date dengan constraint: wajib diisi
+iddivisi int sebagai foreign key, tidak boleh kosong, merujuk ke tabel divisi ke field id
+idjabatan int sebagai foreign key, tidak boleh kosong, merujuk ke tabel jabatan ke field id
+alamat text
+= MariaDB [dbpegawai]> CREATE TABLE pegawai (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     nip CHAR(5) NOT NULL UNIQUE,
+    ->     nama VARCHAR(30) NOT NULL,
+    ->     jenis_kelamin ENUM('Laki-Laki', 'Perempuan') NOT NULL,
+    ->     tmp_lahir VARCHAR(30) NOT NULL,
+    ->     tgl_lahir DATE NOT NULL,
+    ->     iddivisi INT NOT NULL,
+    ->     idjabatan INT NOT NULL,
+    ->     alamat TEXT,
+    ->     FOREIGN KEY (iddivisi) REFERENCES divisi(id),
+    ->     FOREIGN KEY (idjabatan) REFERENCES jabatan(id)
+    -> );
+Query OK, 0 rows affected (0.013 sec)
+
+
+Jawaban no. 8 menampilkan deskripsi tabel pegawai 
+= 
+MariaDB [dbpegawai]> DESCRIBE pegawai;
++---------------+-------------------------------+------+-----+---------+----------------+
+| Field         | Type                          | Null | Key | Default | Extra          |
++---------------+-------------------------------+------+-----+---------+----------------+
+| id            | int(11)                       | NO   | PRI | NULL    | auto_increment |
+| nip           | char(5)                       | NO   | UNI | NULL    |                |
+| nama          | varchar(30)                   | NO   |     | NULL    |                |
+| jenis_kelamin | enum('Laki-Laki','Perempuan') | NO   |     | NULL    |                |
+| tmp_lahir     | varchar(30)                   | NO   |     | NULL    |                |
+| tgl_lahir     | date                          | NO   |     | NULL    |                |
+| iddivisi      | int(11)                       | NO   | MUL | NULL    |                |
+| idjabatan     | int(11)                       | NO   | MUL | NULL    |                |
+| alamat        | text                          | YES  |     | NULL    |                |
++---------------+-------------------------------+------+-----+---------+----------------+
+9 rows in set (0.004 sec)
+
+
+Jawaban no. 9 menampilkan tabel-tabel yang ada di dbpegawai 
+= MariaDB [dbpegawai]> SHOW TABLES;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| jabatan             |
+| pegawai             |
++---------------------+
+3 rows in set (0.001 sec)
+
+
+Jawaban no. 10 Input data divisi => SDM, Keuangan, Marketing, IT 
+= MariaDB [dbpegawai]> INSERT INTO divisi (nama) VALUES ('SDM'), ('Keuangan'), ('Marketing'), ('IT');
+Query OK, 4 rows affected (0.004 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+Jawaban no. 11 menampilkan seluruh data divisi 
+= MariaDB [dbpegawai]> SELECT * FROM divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.001 sec)
+
+
+Jawaban no. 12 Input data jabatan => Direktur, Manajer, Asisten Manajer, Staff 
+= MariaDB [dbpegawai]> INSERT INTO jabatan (nama) VALUES ('Direktur'), ('Manajer'), ('Asisten Manajer'), ('Staff');
+Query OK, 4 rows affected (0.002 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+Jawaban no. 13 menampilkan seluruh data jabatan
+= MariaDB [dbpegawai]> SELECT * FROM jabatan;
++----+-----------------+
+| id | nama            |
++----+-----------------+
+|  3 | Asisten Manajer |
+|  1 | Direktur        |
+|  2 | Manajer         |
+|  4 | Staff           |
++----+-----------------+
+4 rows in set (0.000 sec)
+
+ 
+Jawaban no. 14 Input 20 orang pegawai ( 1 divisi 5 orang, untuk gender dan jabatan diacak) 
+= MariaDB [dbpegawai]> INSERT INTO pegawai (nip, nama, jenis_kelamin, tmp_lahir, tgl_lahir, iddivisi, idjabatan, alamat)
+    -> VALUES
+    -> ('00001', 'Joni', 'Laki-Laki', 'Jakarta', '1990-01-01', 1, 2, 'Jl. Mawar No. 123'),
+    -> ('00002', 'Jani', 'Perempuan', 'Bogor', '1992-05-10', 1, 3, 'Jl. Melati No. 124'),
+    -> ('00003', 'Alice', 'Perempuan', 'Bandung', '1993-02-15', 1, 1, 'Jl. Anggrek No. 125'),
+    -> ('00004', 'Bobby', 'Laki-Laki', 'Surabaya', '1991-04-20', 1, 4, 'Jl. Tulip No. 126'),
+    -> ('00005', 'Charlie', 'Laki-Laki', 'Makasar', '1994-10-30', 1, 4, 'Jl. Kamboja No. 127'),
+    -> ('00006', 'Adit', 'Laki-Laki', 'Jakarta', '1990-05-11', 2, 4, 'Jl. Mawar No. 123'),
+    -> ('00007', 'Ranti', 'Perempuan', 'Jakarta', '1992-12-22', 2, 1, 'Jl. Melati No. 124'),
+    -> ('00008', 'Anya', 'Perempuan', 'Bandung', '1993-02-05', 2, 4, 'Jl. Anggrek No. 125'),
+    -> ('00009', 'Rafi', 'Laki-Laki', 'Depok', '1991-08-20', 2, 3, 'Jl. Tulip No. 126'),
+    -> ('00010', 'Ayyas', 'Laki-Laki', 'Palangkaraya', '1994-07-20', 2, 2, 'Jl. Kamboja No. 127'),
+    -> ('00011', 'Tio', 'Laki-Laki', 'Jakarta', '1990-10-01', 3, 2, 'Jl. Mawar No. 123'),
+    -> ('00012', 'Jeni', 'Perempuan', 'Bogor', '1992-06-20', 3, 3, 'Jl. Melati No. 124'),
+    -> ('00013', 'Alika', 'Perempuan', 'Bandung', '1993-12-15', 3, 4, 'Jl. Anggrek No. 125'),
+    -> ('00014', 'Bima', 'Laki-Laki', 'Solo', '1991-04-22', 3, 4, 'Jl. Tulip No. 126'),
+    -> ('00015', 'Carlos', 'Laki-Laki', 'Bogor', '1994-11-30', 3, 2, 'Jl. Kamboja No. 127'),
+    -> ('00016', 'Putra', 'Laki-Laki', 'Indramayu', '1990-03-11', 4, 2, 'Jl. Mawar No. 123'),
+    -> ('00017', 'Rain', 'Perempuan', 'Jakarta', '1992-03-02', 4, 3, 'Jl. Melati No. 124'),
+    -> ('00018', 'Aca', 'Perempuan', 'Bandung', '1993-12-05', 4, 4, 'Jl. Anggrek No. 125'),
+    -> ('00019', 'Rian', 'Laki-Laki', 'bekasi', '1991-08-10', 4, 4, 'Jl. Tulip No. 126'),
+    -> ('00020', 'Abi', 'Laki-Laki', 'Tanggerang', '1994-07-30', 4, 2, 'Jl. Kamboja No. 127');
+Query OK, 20 rows affected (0.006 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+Jawaban no. 15 menampilkan seluruh data pegawai
+= MariaDB [dbpegawai]> SELECT * FROM pegawai;
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+
+|  1 | 00001 | Joni    | Laki-Laki     | Jakarta      | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |
+|  2 | 00002 | Jani    | Perempuan     | Bogor        | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |
+|  3 | 00003 | Alice   | Perempuan     | Bandung      | 1993-02-15 |        1 |         1 | Jl. Anggrek No. 125 |
+|  4 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |
+|  5 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |
+|  6 | 00006 | Adit    | Laki-Laki     | Jakarta      | 1990-05-11 |        2 |         4 | Jl. Mawar No. 123   |
+|  7 | 00007 | Ranti   | Perempuan     | Jakarta      | 1992-12-22 |        2 |         1 | Jl. Melati No. 124  |
+|  8 | 00008 | Anya    | Perempuan     | Bandung      | 1993-02-05 |        2 |         4 | Jl. Anggrek No. 125 |
+|  9 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |
+| 10 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |
+| 11 | 00011 | Tio     | Laki-Laki     | Jakarta      | 1990-10-01 |        3 |         2 | Jl. Mawar No. 123   |
+| 12 | 00012 | Jeni    | Perempuan     | Bogor        | 1992-06-20 |        3 |         3 | Jl. Melati No. 124  |
+| 13 | 00013 | Alika   | Perempuan     | Bandung      | 1993-12-15 |        3 |         4 | Jl. Anggrek No. 125 |
+| 14 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |
+| 15 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |
+| 16 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |
+| 17 | 00017 | Rain    | Perempuan     | Jakarta      | 1992-03-02 |        4 |         3 | Jl. Melati No. 124  |
+| 18 | 00018 | Aca     | Perempuan     | Bandung      | 1993-12-05 |        4 |         4 | Jl. Anggrek No. 125 |
+| 19 | 00019 | Rian    | Laki-Laki     | bekasi       | 1991-08-10 |        4 |         4 | Jl. Tulip No. 126   |
+| 20 | 00020 | Abi     | Laki-Laki     | Tanggerang   | 1994-07-30 |        4 |         2 | Jl. Kamboja No. 127 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+
+20 rows in set (0.000 sec)
+
+ 
+Jawaban no. 16 Ubah data 5 orang pegawai (dengan ketentuan ubah 3 kolom(bebas)) 
+= MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'John Smith', jenis_kelamin = 'Laki-laki', alamat = 'Jl. Matahari  No. 167' WHERE id = 1;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Ranti Amaliah', jenis_kelamin = 'Perempuan', alamat = 'Jl. Melati  No. 212' WHERE id = 7;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Aditya', jenis_kelamin = 'Laki-laki', alamat = 'Jl. Melati  No. 176' WHERE id = 6;
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Rafi Nugroho', jenis_kelamin = 'Laki-laki', alamat = 'Jl. Kamboja No. 272' WHERE id = 9;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Alice jhon', jenis_kelamin = 'Perempuani', alamat = 'Jl. Mawar No. 181' WHERE id = 3;
+Query OK, 1 row affected, 1 warning (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+
+Jawaban no. 17 Hapus 2 orang pegawai pegawai terakhir 
+= MariaDB [dbpegawai]> DELETE FROM pegawai ORDER BY id DESC LIMIT 2;
+Query OK, 2 rows affected (0.003 sec)
+
+MariaDB [dbpegawai]> DELETE FROM pegawai ORDER BY id DESC LIMIT 19;
+Query OK, 0 rows affected (0.000 sec)
+
+
+Jawaban no. 18 Gunakan alter tabel pada tabel pegawai untuk menambahkan kolom baru berat_badan dengan 
+tipe data float wajib diisi, lalu input berat badan semua pegawai secara acak 
+= MariaDB [dbpegawai]> ALTER TABLE pegawai ADD COLUMN berat_badan FLOAT NOT NULL;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET berat_badan = ROUND(RAND() * 100, 2);
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+
+Jawaban no. 19 Gunakan alter tabel pada tabel pegawai untuk menambahkan kolom baru umur dengan tipe data 
+integer wajib diisi, lalu input umur semua pegawai secara acak 
+= MariaDB [dbpegawai]> ALTER TABLE pegawai ADD COLUMN umur INT NOT NULL;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET umur = YEAR(CURRENT_DATE()) - YEAR(tgl_lahir);
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+
+Jawaban no. 20 Gunakan alter tabel pada tabel pegawai untuk mengubah nama kolom gender menjadi 
+jenis_kelamin 
+= MariaDB [dbpegawai]> ALTER TABLE pegawai CHANGE COLUMN gender jenis_kelamin ENUM('Laki-Laki', 'Perempuan') NOT NULL;
+ERROR 1054 (42S22): Unknown column 'gender' in 'pegawai'
+MariaDB [dbpegawai]> ALTER TABLE pegawai CHANGE COLUMN jenis_kel
+amin gender ENUM('Laki-Laki', 'Perempuan') NOT NULL;
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> ALTER TABLE pegawai CHANGE COLUMN gender jenis_kelamin ENUM('Laki-Laki', 'Perempuan') NOT NULL;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Jawaban no. 21 menampilkan kolom2 tertentu di tabel pegawai (nip,nama,jenis_kelamin,alamat) 
+= SELECT nip, nama, jenis_kelamin, alamat FROM pegawai;
++-------+---------+---------------+---------------------+
+| nip   | nama    | jenis_kelamin | alamat              |
++-------+---------+---------------+---------------------+
+| 00001 | Joni    | Laki-Laki     | Jl. Mawar No. 123   |
+| 00002 | Jani    | Perempuan     | Jl. Melati No. 124  |
+| 00003 | Alice   | Perempuan     | Jl. Anggrek No. 125 |
+| 00004 | Bobby   | Laki-Laki     | Jl. Tulip No. 126   |
+| 00005 | Charlie | Laki-Laki     | Jl. Kamboja No. 127 |
+| 00006 | Adit    | Laki-Laki     | Jl. Mawar No. 123   |
+| 00007 | Ranti   | Perempuan     | Jl. Melati No. 124  |
+| 00008 | Anya    | Perempuan     | Jl. Anggrek No. 125 |
+| 00009 | Rafi    | Laki-Laki     | Jl. Tulip No. 126   |
+| 00010 | Ayyas   | Laki-Laki     | Jl. Kamboja No. 127 |
+| 00011 | Tio     | Laki-Laki     | Jl. Mawar No. 123   |
+| 00012 | Jeni    | Perempuan     | Jl. Melati No. 124  |
+| 00013 | Alika   | Perempuan     | Jl. Anggrek No. 125 |
+| 00014 | Bima    | Laki-Laki     | Jl. Tulip No. 126   |
+| 00015 | Carlos  | Laki-Laki     | Jl. Kamboja No. 127 |
+| 00016 | Putra   | Laki-Laki     | Jl. Mawar No. 123   |
+| 00017 | Rain    | Perempuan     | Jl. Melati No. 124  |
+| 00018 | Aca     | Perempuan     | Jl. Anggrek No. 125 |
++-------+---------+---------------+---------------------+
+18 rows in set (0.002 sec)
+
+
+Jawaban no. 22 menampilkan baris2 tertentu di tabel pegawai (yang gendernya laki2 saja)
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE jenis_kelamin = 'Laki-Laki';
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| 21 | 00001 | Joni    | Laki-Laki     | Jakarta      | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
+| 26 | 00006 | Adit    | Laki-Laki     | Jakarta      | 1990-05-11 |        2 |         4 | Jl. Mawar No. 123   |           0 |    0 |
+| 29 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |           0 |    0 |
+| 30 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 31 | 00011 | Tio     | Laki-Laki     | Jakarta      | 1990-10-01 |        3 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 34 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 35 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 36 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+10 rows in set (0.001 sec)
+
+
+Jawaban no. 23 menampilkan baris2 tertentu di tabel pegawai (yang bekerja di divisi IT dan gendernya perempuan)
+=  MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE iddivisi = (SELECT id FROM divisi WHERE nama = 'IT') AND jenis_kelamin = 'Perempuan';
++----+-------+------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| 37 | 00017 | Rain | Perempuan     | Jakarta   | 1992-03-02 |        4 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 38 | 00018 | Aca  | Perempuan     | Bandung   | 1993-12-05 |        4 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
++----+-------+------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+2 rows in set (0.001 sec)
+
+
+Jawaban no. 24 menampilkan data pegawai yang umurnya di atas 30 tahun dan lahirnya di kota jakarta dengan 
+klausa WHERE, AND 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE umur > 30 AND tmp_lahir = 'Jakarta';
+Empty set (0.001 sec)
+
+
+Jawaban no. 25 menampilkan data pegawai yang bekerja pada divisi marketing, berumur lebih dari 30 tahun dan 
+berjenis kelamin perempuan dengan klausa WHERE, AND
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE iddivisi = (SELECT id FROM divisi WHERE nama = 'Marketing') AND umur > 30 AND jenis_kelamin = 'Perempuan';
+Empty set (0.001 sec)
+ 
+
+Jawaban no. 26 menampilkan data pegawai dengan klausa key (nip) 
+= +----+-------+------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+| id | nip   | nama | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat            | berat_badan | umur |
++----+-------+------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+| 21 | 00001 | Joni | Laki-Laki     | Jakarta   | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123 |           0 |    0 |
++----+-------+------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+1 row in set (0.000 sec)
+
+
+Jawaban no. 27 menampilkan data pegawai dengan klausa non key (gender) 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE jenis_kelamin = 'Laki-Laki';
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| 21 | 00001 | Joni    | Laki-Laki     | Jakarta      | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
+| 26 | 00006 | Adit    | Laki-Laki     | Jakarta      | 1990-05-11 |        2 |         4 | Jl. Mawar No. 123   |           0 |    0 |
+| 29 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |           0 |    0 |
+| 30 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 31 | 00011 | Tio     | Laki-Laki     | Jakarta      | 1990-10-01 |        3 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 34 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 35 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 36 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+10 rows in set (0.001 sec)
+
+
+Jawaban no. 28 menampilkan data pegawai dengan klausa in (menyebutkan beberapa nip)
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE nip IN ('00001', '00002', '00003');
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama  | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| 21 | 00001 | Joni  | Laki-Laki     | Jakarta   | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 22 | 00002 | Jani  | Perempuan     | Bogor     | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 23 | 00003 | Alice | Perempuan     | Bandung   | 1993-02-15 |        1 |         1 | Jl. Anggrek No. 125 |           0 |    0 |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+3 rows in set (0.001 sec)
+
+ 
+Jawaban no. 29 menampilkan data pegawai dengan klausa not in (menyebutkan beberapa tempat lahir) 
+= 
+MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE tmp_lahir NOT IN ('Jakarta', 'Bandung');
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| 22 | 00002 | Jani    | Perempuan     | Bogor        | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
+| 29 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |           0 |    0 |
+| 30 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 32 | 00012 | Jeni    | Perempuan     | Bogor        | 1992-06-20 |        3 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 34 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 35 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 36 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+9 rows in set (0.001 sec)
+
+
+Jawaban no. 30 menampilkan data pegawai berdasarkan nama secara ascending 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai ORDER BY nama ASC;
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| 38 | 00018 | Aca     | Perempuan     | Bandung      | 1993-12-05 |        4 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 26 | 00006 | Adit    | Laki-Laki     | Jakarta      | 1990-05-11 |        2 |         4 | Jl. Mawar No. 123   |           0 |    0 |
+| 23 | 00003 | Alice   | Perempuan     | Bandung      | 1993-02-15 |        1 |         1 | Jl. Anggrek No. 125 |           0 |    0 |
+| 33 | 00013 | Alika   | Perempuan     | Bandung      | 1993-12-15 |        3 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 28 | 00008 | Anya    | Perempuan     | Bandung      | 1993-02-05 |        2 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 30 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 34 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 35 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
+| 22 | 00002 | Jani    | Perempuan     | Bogor        | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 32 | 00012 | Jeni    | Perempuan     | Bogor        | 1992-06-20 |        3 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 21 | 00001 | Joni    | Laki-Laki     | Jakarta      | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 36 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 29 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |           0 |    0 |
+| 37 | 00017 | Rain    | Perempuan     | Jakarta      | 1992-03-02 |        4 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 27 | 00007 | Ranti   | Perempuan     | Jakarta      | 1992-12-22 |        2 |         1 | Jl. Melati No. 124  |           0 |    0 |
+| 31 | 00011 | Tio     | Laki-Laki     | Jakarta      | 1990-10-01 |        3 |         2 | Jl. Mawar No. 123   |           0 |    0 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+18 rows in set (0.001 sec)
+
+
+Jawaban no. 31amp menampilkan data pegawai dari yang berat badan paling gemuk ke paling kurus 
+= 
+MariaDB [dbpegawai]> SELECT * FROM pegawai ORDER BY berat_badan DESC;
+
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir    | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+| 21 | 00001 | Joni    | Laki-Laki     | Jakarta      | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 22 | 00002 | Jani    | Perempuan     | Bogor        | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 23 | 00003 | Alice   | Perempuan     | Bandung      | 1993-02-15 |        1 |         1 | Jl. Anggrek No. 125 |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya     | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar      | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
+| 26 | 00006 | Adit    | Laki-Laki     | Jakarta      | 1990-05-11 |        2 |         4 | Jl. Mawar No. 123   |           0 |    0 |
+| 27 | 00007 | Ranti   | Perempuan     | Jakarta      | 1992-12-22 |        2 |         1 | Jl. Melati No. 124  |           0 |    0 |
+| 28 | 00008 | Anya    | Perempuan     | Bandung      | 1993-02-05 |        2 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 29 | 00009 | Rafi    | Laki-Laki     | Depok        | 1991-08-20 |        2 |         3 | Jl. Tulip No. 126   |           0 |    0 |
+| 30 | 00010 | Ayyas   | Laki-Laki     | Palangkaraya | 1994-07-20 |        2 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 31 | 00011 | Tio     | Laki-Laki     | Jakarta      | 1990-10-01 |        3 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 32 | 00012 | Jeni    | Perempuan     | Bogor        | 1992-06-20 |        3 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 33 | 00013 | Alika   | Perempuan     | Bandung      | 1993-12-15 |        3 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 34 | 00014 | Bima    | Laki-Laki     | Solo         | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 35 | 00015 | Carlos  | Laki-Laki     | Bogor        | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 36 | 00016 | Putra   | Laki-Laki     | Indramayu    | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 37 | 00017 | Rain    | Perempuan     | Jakarta      | 1992-03-02 |        4 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 38 | 00018 | Aca     | Perempuan     | Bandung      | 1993-12-05 |        4 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
++----+-------+---------+---------------+--------------+------------+----------+-----------+---------------------+-------------+------+
+18 rows in set (0.001 sec)
+
+
+Jawaban no. 32 menampilkan data 5 pegawai teratas gunakan klausa limit
+= MariaDB [dbpegawai]> SELECT * FROM pegawai LIMIT 5;
++----+-------+---------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama    | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+---------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| 21 | 00001 | Joni    | Laki-Laki     | Jakarta   | 1990-01-01 |        1 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 22 | 00002 | Jani    | Perempuan     | Bogor     | 1992-05-10 |        1 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 23 | 00003 | Alice   | Perempuan     | Bandung   | 1993-02-15 |        1 |         1 | Jl. Anggrek No. 125 |           0 |    0 |
+| 24 | 00004 | Bobby   | Laki-Laki     | Surabaya  | 1991-04-20 |        1 |         4 | Jl. Tulip No. 126   |           0 |    0 |
+| 25 | 00005 | Charlie | Laki-Laki     | Makasar   | 1994-10-30 |        1 |         4 | Jl. Kamboja No. 127 |           0 |    0 |
++----+-------+---------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+5 rows in set (0.000 sec)
+
+
+Jawaban no. 33 menampilkan data 5 pegawai terbawah gunakan klausa limit offset 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai ORDER BY id DESC LIMIT 5;
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+| 38 | 00018 | Aca    | Perempuan     | Bandung   | 1993-12-05 |        4 |         4 | Jl. Anggrek No. 125 |           0 |    0 |
+| 37 | 00017 | Rain   | Perempuan     | Jakarta   | 1992-03-02 |        4 |         3 | Jl. Melati No. 124  |           0 |    0 |
+| 36 | 00016 | Putra  | Laki-Laki     | Indramayu | 1990-03-11 |        4 |         2 | Jl. Mawar No. 123   |           0 |    0 |
+| 35 | 00015 | Carlos | Laki-Laki     | Bogor     | 1994-11-30 |        3 |         2 | Jl. Kamboja No. 127 |           0 |    0 |
+| 34 | 00014 | Bima   | Laki-Laki     | Solo      | 1991-04-22 |        3 |         4 | Jl. Tulip No. 126   |           0 |    0 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------+-------------+------+
+5 rows in set (0.001 sec)
+
+Jawaban no. 34 menampilkan jumlah pegawai gunakan fungsi aggregrat count 
+= 
+MariaDB [dbpegawai]> SELECT COUNT(*) AS total_pegawai FROM pegawai;
++---------------+
+| total_pegawai |
++---------------+
+|            18 |
++---------------+
+1 row in set (0.000 sec)
+
+
+Jawaban no. 35 menampilkan nip,nama pegawai, umur yg paling tua gunakan fungsi aggregrat max (kombinasi 
+dengan sub query) 
+= MariaDB [dbpegawai]> SELECT nip, nama, YEAR(CURRENT_DATE()) - YEAR(tgl_lahir) AS umur
+    -> FROM pegawai
+    -> WHERE tgl_lahir = (SELECT MAX(tgl_lahir) FROM pegawai);
++-------+--------+------+
+| nip   | nama   | umur |
++-------+--------+------+
+| 00015 | Carlos |   30 |
++-------+--------+------+
+1 row in set (0.001 sec)
+
+
+Jawaban no. 36 menampilkan nip,nama pegawai, berat_badan yg paling kurus gunakan fungsi aggregrat min 
+(kombinasi dengan sub query)
+= MariaDB [dbpegawai]> SELECT nip, nama, berat_badan
+    -> FROM pegawai
+    -> WHERE berat_badan = (SELECT MIN(berat_badan) FROM pegawai);
++-------+---------+-------------+
+| nip   | nama    | berat_badan |
++-------+---------+-------------+
+| 00001 | Joni    |           0 |
+| 00002 | Jani    |           0 |
+| 00003 | Alice   |           0 |
+| 00004 | Bobby   |           0 |
+| 00005 | Charlie |           0 |
+| 00006 | Adit    |           0 |
+| 00007 | Ranti   |           0 |
+| 00008 | Anya    |           0 |
+| 00009 | Rafi    |           0 |
+| 00010 | Ayyas   |           0 |
+| 00011 | Tio     |           0 |
+| 00012 | Jeni    |           0 |
+| 00013 | Alika   |           0 |
+| 00014 | Bima    |           0 |
+| 00015 | Carlos  |           0 |
+| 00016 | Putra   |           0 |
+| 00017 | Rain    |           0 |
+| 00018 | Aca     |           0 |
++-------+---------+-------------+
+18 rows in set (0.000 sec)
+ 
+
+Jawaban no. 37 menampilkan data rata2 umur pegawai gunakan fungsi aggregrat avg 
+= MariaDB [dbpegawai]> SELECT AVG(YEAR(CURRENT_DATE()) - YEAR(tgl_lahir)) AS rata_rata_umur FROM pegawai;
++----------------+
+| rata_rata_umur |
++----------------+
+|        32.0556 |
++----------------+
+1 row in set (0.001 sec)
+ 
+Jawaban no. 38 menampilkan jumlah data pegawai yang laki2 dan berumur lebih dari 40 tahun dan berjabatan 
+Manajer, gunakan fungsi aggregrat count dan klausa AND 
+= MariaDB [dbpegawai]> SELECT COUNT(*) AS jumlah_pegawai FROM pegawai WHERE jenis_kelamin = 'Laki-Laki' AND umur > 40 AND idjabatan = (SELECT id FROM jabatan WHERE nama = 'Manajer');
++----------------+
+| jumlah_pegawai |
++----------------+
+|              0 |
++----------------+
+1 row in set (0.002 sec)
+
+
+Jawaban no. 39 menampilkan jumlah data pegawai yang perempuan dan berumur kurang dari 40 tahun dan 
+berjabatan Staff, gunakan fungsi aggregrat count dan klausa AND
+= 
+MariaDB [dbpegawai]> SELECT COUNT(*) AS jumlah_pegawai FROM pegawai WHERE jenis_kelamin = 'Perempuan' AND umur < 40 AND idjabatan = (SELECT id FROM jabatan WHERE nama = 'Staff');
++----------------+
+| jumlah_pegawai |
++----------------+
+|              3 |
++----------------+
+1 row in set (0.001 sec)
+
+ 
+Jawaban no. 40 menampilkan jumlah data pegawai yang perempuan gunakan fungsi aggregrat count 
+= MariaDB [dbpegawai]> SELECT COUNT(*) AS jumlah_pegawai_perempuan FROM pegawai WHERE jenis_kelamin = 'Perempuan';
++--------------------------+
+| jumlah_pegawai_perempuan |
++--------------------------+
+|                        8 |
++--------------------------+
+1 row in set (0.000 sec)
+
+
+Jawaban no. 41 menampilkan jumlah pegawai yang bekerja di divisi SDM dengan fungsi aggregrat sum dan klausa 
+= MariaDB [dbpegawai]> SELECT SUM(CASE WHEN iddivisi = (SELECT id FROM divisi WHERE nama = 'SDM') THEN 1 ELSE 0 END) AS jumlah_pegawai_sdm FROM pegawai;
++--------------------+
+| jumlah_pegawai_sdm |
++--------------------+
+|                  5 |
++--------------------+
+1 row in set (0.001 sec)
+
+
+Jawaban no. 42 menampilkan jumlah pegawai berdasarkan divisi masing2 menggunakan fungsi aggregrat count 
+dan klausa group by 
+= 
+MariaDB [dbpegawai]> SELECT d.nama AS divisi, COUNT(*) AS jumlah_pegawai
+    -> FROM pegawai p
+    -> JOIN divisi d ON p.iddivisi = d.id
+    -> GROUP BY d.nama;
++-----------+----------------+
+| divisi    | jumlah_pegawai |
++-----------+----------------+
+| IT        |              3 |
+| Keuangan  |              5 |
+| Marketing |              5 |
+| SDM       |              5 |
++-----------+----------------+
+4 rows in set (0.003 sec)
+
+
+Jawaban no. 43 menampilkan data jumlah pegawai berdasarkan gender, yg jumlah minimal 10 orang (gunakan 
+group by dan having) 
+= MariaDB [dbpegawai]> SELECT jenis_kelamin, COUNT(*) AS jumlah_pegawai
+
+    -> FROM pegawai
+    -> GROUP BY jenis_kelamin
+    -> HAVING COUNT(*) >= 10;
++---------------+----------------+
+| jenis_kelamin | jumlah_pegawai |
++---------------+----------------+
+| Laki-Laki     |             10 |
++---------------+----------------+
+1 row in set (0.008 sec)
+
+
+Jawaban no. 44 Cari data pegawai yang berawalan kata Muhammad 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE nama LIKE 'Muhammad%';
+Empty set (0.001 sec)
+
+Jawaban no. 45 Cari data pegawai yang berakhiran kata Santoso 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE nama LIKE '%Santoso';
+Empty set (0.001 sec)
+
+Jawaban no. 46 Cari data pegawai yang mengadung kata Asep 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE nama LIKE '%Asep%';
+Empty set (0.002 sec)
+
+Jawaban no. 47 Cari data pegawai yang huruf kelimanya huruf S 
+= MariaDB [dbpegawai]> SELECT * FROM pegawai WHERE nama LIKE '__s%';
+Empty set (0.001 sec)
